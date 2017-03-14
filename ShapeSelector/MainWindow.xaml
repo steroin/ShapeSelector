@@ -5,8 +5,104 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ShapeSelector"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+        Title="MainWindow" Height="408.499" Width="642.989">
+    <Grid Margin="0,0,-8,-4">
+        <Grid Margin="0,0,12,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="7*"/>
+                <ColumnDefinition Width="624*"/>
+            </Grid.ColumnDefinitions>
+            <Menu x:Name="menu" Height="19" VerticalAlignment="Top" Grid.ColumnSpan="2" Margin="0,0,-4,0">
+                <MenuItem Header="Plik">
+                    <MenuItem x:Name="mitem_FileOpen" Header="Otwórz" HorizontalAlignment="Left" Width="140"/>
+                    <MenuItem x:Name="mitem_FileSave" Header="Zapisz" HorizontalAlignment="Left" Width="140"/>
+                    <MenuItem x:Name="mitem_FileClose" Header="Zamknij" HorizontalAlignment="Left" Width="140"/>
+                </MenuItem>
+            </Menu>
+            <ToolBar x:Name="toolBar" Margin="-3,19,-4,0" VerticalAlignment="Top" Height="66" IsHitTestVisible="True" ToolBarTray.IsLocked="True" Grid.ColumnSpan="2">
+                <Button x:Name="button_Oval" Height="60" VerticalAlignment="Top" Width="90" Padding="0">
+                    <Grid Grid.Column="1" HorizontalAlignment="Center" Height="60" VerticalAlignment="Top" Width="90">
+                        <Image HorizontalAlignment="Center" Height="38" VerticalAlignment="Top" Width="40" Source="res/ellipse.png"/>
+                        <Label Content="Okrąd" Margin="2,35,2,0" VerticalAlignment="Top" HorizontalAlignment="Center" Height="26" Grid.Row="1"/>
+                    </Grid>
+                </Button>
+
+                <Button x:Name="button_Rectangle" Height="60" VerticalAlignment="Top" Width="90" Padding="0">
+                    <Grid Grid.Column="1" HorizontalAlignment="Center" Height="60" VerticalAlignment="Top" Width="90">
+                        <Image HorizontalAlignment="Center" Height="38" VerticalAlignment="Top" Width="40" Source="res/rectangle.png"/>
+                        <Label Content="Prostokąt" Margin="2,35,2,0" VerticalAlignment="Top" HorizontalAlignment="Center" Height="26" Grid.Row="1"/>
+                    </Grid>
+                </Button>
+                <Button x:Name="button_Polygon" Height="60" VerticalAlignment="Top" Width="90" Padding="0">
+                    <Grid Grid.Column="1" HorizontalAlignment="Center" Height="60" VerticalAlignment="Top" Width="90">
+                        <Image HorizontalAlignment="Center" Height="38" VerticalAlignment="Top" Width="40" Source="res/polygon.png"/>
+                        <Label Content="Wielokąt" Margin="2,35,2,0" VerticalAlignment="Top" HorizontalAlignment="Center" Height="26" Grid.Row="1"/>
+                    </Grid>
+                </Button>
+                <Button x:Name="button_Selection" Height="60" VerticalAlignment="Top" Width="90" Padding="0">
+                    <Grid Grid.Column="1" HorizontalAlignment="Center" Height="60" VerticalAlignment="Top" Width="90">
+                        <Image HorizontalAlignment="Center" Height="38" VerticalAlignment="Top" Width="40" Source="res/arrows.png"/>
+                        <Label Content="Zaznaczenie" Margin="2,35,2,0" VerticalAlignment="Top" HorizontalAlignment="Center" Height="26" Grid.Row="1"/>
+                    </Grid>
+                </Button>
+                <ComboBox x:Name="comboBox_ColorPicker" Height="49" Margin="0" VerticalAlignment="Center" Width="150">
+                    <ComboBoxItem x:Name="cbitem_Blue" HorizontalAlignment="Left" Width="150" IsSelected="True">
+                        <Grid Grid.Column="1" HorizontalAlignment="Left" Height="49" VerticalAlignment="Top" Width="150">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="27*"/>
+                                <ColumnDefinition Width="103*"/>
+                            </Grid.ColumnDefinitions>
+                            <Image HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="50" Source="res/blue.png" Margin="0" Grid.ColumnSpan="2"/>
+                            <Label Content="Niebieski" HorizontalAlignment="Left" Margin="28,0,0,0" VerticalAlignment="Center" Grid.Column="1"/>
+                        </Grid>
+                    </ComboBoxItem>
+                    <ComboBoxItem x:Name="cbitem_Gray" HorizontalAlignment="Left" Width="150">
+                        <Grid Grid.Column="1" HorizontalAlignment="Left" Height="49" VerticalAlignment="Top" Width="150">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="27*"/>
+                                <ColumnDefinition Width="103*"/>
+                            </Grid.ColumnDefinitions>
+                            <Image HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="50" Source="res/gray.png" Margin="0" Grid.ColumnSpan="2"/>
+                            <Label Content="Szary" HorizontalAlignment="Left" Margin="28,0,0,0" VerticalAlignment="Center" Grid.Column="1"/>
+                        </Grid>
+                    </ComboBoxItem>
+                    <ComboBoxItem x:Name="cbitem_Green" HorizontalAlignment="Left" Width="150">
+                        <Grid Grid.Column="1" HorizontalAlignment="Left" Height="49" VerticalAlignment="Top" Width="150">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="27*"/>
+                                <ColumnDefinition Width="103*"/>
+                            </Grid.ColumnDefinitions>
+                            <Image HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="50" Source="res/green.png" Margin="0" Grid.ColumnSpan="2"/>
+                            <Label Content="Zielony" HorizontalAlignment="Left" Margin="28,0,0,0" VerticalAlignment="Center" Grid.Column="1"/>
+                        </Grid>
+                    </ComboBoxItem>
+                    <ComboBoxItem x:Name="cbitem_Red" HorizontalAlignment="Left" Width="150">
+                        <Grid Grid.Column="1" HorizontalAlignment="Left" Height="49" VerticalAlignment="Top" Width="150">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="27*"/>
+                                <ColumnDefinition Width="103*"/>
+                            </Grid.ColumnDefinitions>
+                            <Image HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="50" Source="res/red.png" Margin="0" Grid.ColumnSpan="2"/>
+                            <Label Content="Czerwony" HorizontalAlignment="Left" Margin="28,0,0,0" VerticalAlignment="Center" Grid.Column="1"/>
+                        </Grid>
+                    </ComboBoxItem>
+                    <ComboBoxItem x:Name="cbitem_Yellow" HorizontalAlignment="Left" Width="150">
+                        <Grid Grid.Column="1" HorizontalAlignment="Left" Height="49" VerticalAlignment="Top" Width="150">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="27*"/>
+                                <ColumnDefinition Width="103*"/>
+                            </Grid.ColumnDefinitions>
+                            <Image HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="50" Source="res/yellow.png" Margin="0" Grid.ColumnSpan="2"/>
+                            <Label Content="Żółty" HorizontalAlignment="Left" Margin="28,0,0,0" VerticalAlignment="Center" Grid.Column="1"/>
+                        </Grid>
+                    </ComboBoxItem>
+                </ComboBox>
+            </ToolBar>
+            <Canvas x:Name="canvas" Margin="0,85,0,0" Grid.ColumnSpan="2"/>
+            <Label x:Name="label_Coords" Content="Coords&#xD;&#xA;" Grid.Column="1" HorizontalAlignment="Left" Margin="553,49,0,0" VerticalAlignment="Top" Height="31" Width="61"/>
+
+
+        </Grid>
+
     </Grid>
 </Window>

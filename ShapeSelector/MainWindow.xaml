@@ -20,14 +20,14 @@
                 </MenuItem>
             </Menu>
             <ToolBar x:Name="toolBar" Margin="-3,19,-4,0" VerticalAlignment="Top" Height="66" IsHitTestVisible="True" ToolBarTray.IsLocked="True" Grid.ColumnSpan="2">
-                <Button x:Name="button_Oval" Height="60" VerticalAlignment="Top" Width="90" Padding="0">
+                <Button x:Name="button_Oval" Height="60" VerticalAlignment="Top" Width="90" Padding="0" Click="button_Oval_Click">
                     <Grid Grid.Column="1" HorizontalAlignment="Center" Height="60" VerticalAlignment="Top" Width="90">
                         <Image HorizontalAlignment="Center" Height="38" VerticalAlignment="Top" Width="40" Source="res/ellipse.png"/>
-                        <Label Content="Okrąd" Margin="2,35,2,0" VerticalAlignment="Top" HorizontalAlignment="Center" Height="26" Grid.Row="1"/>
+                        <Label Content="Okrąg" Margin="2,35,2,0" VerticalAlignment="Top" HorizontalAlignment="Center" Height="26" Grid.Row="1"/>
                     </Grid>
                 </Button>
 
-                <Button x:Name="button_Rectangle" Height="60" VerticalAlignment="Top" Width="90" Padding="0">
+                <Button x:Name="button_Rectangle" Height="60" VerticalAlignment="Top" Width="90" Padding="0" Click="button_Rectangle_Click">
                     <Grid Grid.Column="1" HorizontalAlignment="Center" Height="60" VerticalAlignment="Top" Width="90">
                         <Image HorizontalAlignment="Center" Height="38" VerticalAlignment="Top" Width="40" Source="res/rectangle.png"/>
                         <Label Content="Prostokąt" Margin="2,35,2,0" VerticalAlignment="Top" HorizontalAlignment="Center" Height="26" Grid.Row="1"/>
@@ -98,7 +98,7 @@
                     </ComboBoxItem>
                 </ComboBox>
             </ToolBar>
-            <Canvas x:Name="canvas" Margin="0,85,0,0" Grid.ColumnSpan="2"/>
+            <Canvas x:Name="canvas" Margin="0,85,0,0" Grid.ColumnSpan="2" Panel.ZIndex="1" PreviewMouseLeftButtonDown="canvas_MouseLeftButtonDown" PreviewMouseLeftButtonUp="canvas_MouseLeftButtonUp" PreviewMouseMove="canvas_MouseMove"/>
             <Label x:Name="label_Coords" Content="Coords&#xD;&#xA;" Grid.Column="1" HorizontalAlignment="Left" Margin="553,49,0,0" VerticalAlignment="Top" Height="31" Width="61"/>
 
 

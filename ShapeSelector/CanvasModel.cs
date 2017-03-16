@@ -5,16 +5,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Shapes;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace ShapeSelector
 {
     class CanvasModel
     {
         public Dictionary<Shape, Point> Shapes;
+        public BitmapImage currentImage { get; private set; }
 
         public CanvasModel()
         {
             Shapes = new Dictionary<Shape, Point>();
+            currentImage = null;
         }
 
         public void AddShape(Shape s, Point p)
@@ -42,5 +46,9 @@ namespace ShapeSelector
             foreach (Shape s in Shapes.Keys) yield return s;
         }
 
+        public void LoadImage(BitmapImage img)
+        {
+            currentImage = img;
+        }
     }
 }

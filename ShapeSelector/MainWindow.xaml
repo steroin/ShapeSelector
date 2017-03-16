@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ShapeSelector"
         mc:Ignorable="d"
-        Title="MainWindow" Height="408.499" Width="642.989">
+        Title="MainWindow" Height="768" Width="1024">
     <Grid Margin="0,0,-8,-4">
         <Grid Margin="0,0,12,5">
             <Grid.ColumnDefinitions>
@@ -14,9 +14,9 @@
             </Grid.ColumnDefinitions>
             <Menu x:Name="menu" Height="19" VerticalAlignment="Top" Grid.ColumnSpan="2" Margin="0,0,-4,0">
                 <MenuItem Header="Plik">
-                    <MenuItem x:Name="mitem_FileOpen" Header="Otwórz" HorizontalAlignment="Left" Width="140"/>
+                    <MenuItem x:Name="mitem_FileOpen" Header="Otwórz" HorizontalAlignment="Left" Width="140" Click="mitem_FileOpen_Click"/>
                     <MenuItem x:Name="mitem_FileSave" Header="Zapisz" HorizontalAlignment="Left" Width="140"/>
-                    <MenuItem x:Name="mitem_FileClose" Header="Zamknij" HorizontalAlignment="Left" Width="140"/>
+                    <MenuItem x:Name="mitem_FileClose" Header="Zamknij" HorizontalAlignment="Left" Width="140" Click="mitem_FileClose_Click"/>
                 </MenuItem>
             </Menu>
             <ToolBar x:Name="toolBar" Margin="-3,19,-4,0" VerticalAlignment="Top" Height="66" IsHitTestVisible="True" ToolBarTray.IsLocked="True" Grid.ColumnSpan="2">
@@ -98,8 +98,10 @@
                     </ComboBoxItem>
                 </ComboBox>
             </ToolBar>
-            <Canvas x:Name="canvas" Margin="0,85,0,0" Grid.ColumnSpan="2" Panel.ZIndex="1" PreviewMouseLeftButtonDown="canvas_MouseLeftButtonDown" PreviewMouseLeftButtonUp="canvas_MouseLeftButtonUp" PreviewMouseMove="canvas_MouseMove" ClipToBounds="True" MouseLeave="canvas_MouseLeave"/>
-            <Label x:Name="label_Coords" Content="Coords&#xD;&#xA;" Grid.Column="1" HorizontalAlignment="Left" Margin="553,49,0,0" VerticalAlignment="Top" Height="31" Width="61"/>
+            <Label x:Name="label_Coords" Content="[0,0]&#xA;" Grid.Column="1" HorizontalAlignment="Left" Margin="553,49,0,0" VerticalAlignment="Top" Height="31" Width="61"/>
+            <ScrollViewer HorizontalAlignment="Left" Margin="3,95,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <Canvas x:Name="canvas" Width="1009" Height="641" MouseLeave="canvas_MouseLeave" PreviewMouseLeftButtonDown="canvas_MouseLeftButtonDown" PreviewMouseLeftButtonUp="canvas_MouseLeftButtonUp" PreviewMouseMove="canvas_MouseMove" ClipToBounds="True"/>
+            </ScrollViewer>
 
 
         </Grid>

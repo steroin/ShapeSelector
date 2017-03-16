@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,9 +28,7 @@ namespace ShapeSelector
         {
             InitializeComponent();
             canvasModel = new CanvasModel();
-            currentMode = new DrawEllipse(canvasModel, this);
-            canvas.Background = Brushes.Yellow;
-            
+            currentMode = new Selection(canvasModel, this);            
         }
 
         public void RefreshCanvas()
@@ -39,7 +38,7 @@ namespace ShapeSelector
             foreach(Shape s in canvasModel.Shapes.Keys)
             {
                 s.Stroke = null;
-                s.Opacity = 0.6;
+                s.Opacity = 0.4;
                 s.Fill = GetCurrentColor();
                 Canvas.SetTop(s, canvasModel.Shapes[s].Y);
                 Canvas.SetLeft(s, canvasModel.Shapes[s].X);
@@ -88,18 +87,20 @@ namespace ShapeSelector
 
         private void canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (canvasModel.currentImage == null) return;
             if (e.ClickCount == 2) currentMode.DoubleClickAction(e.GetPosition(canvas));
             else currentMode.StartDragAction(e.GetPosition(canvas));           
         }
 
         private void canvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            currentMode.StopDragAction(e.GetPosition(canvas));
-            
+            if (canvasModel.currentImage == null) return;
+            currentMode.StopDragAction(e.GetPosition(canvas));           
         }
 
         private void canvas_MouseMove(object sender, MouseEventArgs e)
         {
+            if (canvasModel.currentImage == null) return;
             currentMode.DragAction(e.GetPosition(canvas));
         }
 
@@ -160,7 +161,42 @@ namespace ShapeSelector
 
         private void canvas_MouseLeave(object sender, MouseEventArgs e)
         {
+            if (canvasModel.currentImage == null) return;
             currentMode.ExitCanvasAction();
+        }
+
+        private void mitem_FileOpen_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog()
+            {
+                DefaultExt = ".jpg",
+                Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif"
+            };
+
+            bool? result = dialog.ShowDialog();
+
+            if(result==true)
+            {
+                var img = new BitmapImage(new Uri(dialog.FileName));
+                LoadImage(img);
+                canvasModel.LoadImage(img);
+            }
+        }
+
+        public void LoadImage(BitmapImage img)
+        {
+            canvasModel = new CanvasModel();
+            canvas.Width = img.Width;
+            canvas.Height = img.Height;
+            canvas.Background = new ImageBrush(img);
+            RefreshCanvas();
+        }
+
+        private void mitem_FileClose_Click(object sender, RoutedEventArgs e)
+        {
+            canvasModel = new CanvasModel();
+            canvas.Background = null;
+            RefreshCanvas();
         }
     }
 }

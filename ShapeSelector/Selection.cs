@@ -4,25 +4,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace ShapeSelector
 {
-    class DrawEllipse : IActionMode
+    class Selection : IActionMode
     {
         CanvasModel model;
         MainWindow view;
         Point startPoint;
-        Ellipse ellipse;
+        Point shapeStartPoint;
         bool dragging;
+        Shape currentShape;
 
-        public DrawEllipse(CanvasModel m, MainWindow v)
+        public Selection(CanvasModel m, MainWindow v)
         {
             model = m;
             view = v;
             dragging = false;
+            currentShape = null;
         }
 
         public void DoubleClickAction(Point p)
@@ -34,24 +36,21 @@ namespace ShapeSelector
         {
             if (dragging)
             {
-                ellipse = new Ellipse();
-                Point start = new Point(Math.Min(p.X, startPoint.X), Math.Min(p.Y, startPoint.Y));
-                ellipse.Width = Math.Abs(p.X - startPoint.X);
-                ellipse.Height = Math.Abs(p.Y - startPoint.Y);
-                ellipse.Stroke = Brushes.Black;
-                view.DrawTempShape(ellipse, start);
+                double moveByX = p.X - startPoint.X;
+                double moveByY = p.Y - startPoint.Y;
+                view.MoveShape(currentShape, new Point(shapeStartPoint.X+moveByX, shapeStartPoint.Y+moveByY));
             }
             view.UpdateCoords((int)p.X, (int)p.Y);
         }
 
         public void ExitCanvasAction()
         {
-            view.UpdateCoords(0,0);
+            view.UpdateCoords(0, 0);
         }
 
         public void StartDragAction(Point p)
         {
-            if(!dragging)
+            if (!dragging)
             {
                 dragging = true;
                 startPoint = p;
@@ -62,15 +61,18 @@ namespace ShapeSelector
         {
             if (dragging)
             {
+                if (currentShape != null) model.MoveShape(currentShape, new Point(p.X-startPoint.X, p.Y-startPoint.Y));
                 dragging = false;
-                view.RemoveTempShape();
-                model.AddShape(ellipse, new Point(Math.Min(p.X, startPoint.X), Math.Min(p.Y, startPoint.Y)));
+                currentShape = null;
                 view.RefreshCanvas();
             }
         }
 
         public void ClickWithinAnotherShapeAction(object sender, MouseButtonEventArgs e)
         {
+            //MessageBox.Show(sender+"");
+            currentShape = (Shape)sender;
+            shapeStartPoint = new Point(Canvas.GetLeft(currentShape), Canvas.GetTop(currentShape));
         }
     }
 }

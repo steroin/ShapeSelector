@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -15,48 +16,61 @@ namespace ShapeSelector
         MainWindow view;
         Point startPoint;
         Rectangle rectangle;
+        bool dragging;
 
         public DrawRectangle(CanvasModel m, MainWindow v)
         {
             model = m;
             view = v;
+            dragging = false;
         }
 
         public void StartDragAction(Point p)
-        { 
-            startPoint = p;
+        {
+            if (!dragging)
+            {
+                dragging = true;
+                startPoint = p;
+            }
         }
 
         public void DragAction(Point p)
         {
-            rectangle = new Rectangle();
-            Point start = new Point(Math.Min(p.X, startPoint.X), Math.Min(p.Y, startPoint.Y));
-            rectangle.Width = Math.Abs(p.X - startPoint.X);
-            rectangle.Height = Math.Abs(p.Y - startPoint.Y);
-            rectangle.Stroke = Brushes.Black;
-            view.DrawTempShape(rectangle, start);
+            if (dragging)
+            {
+                rectangle = new Rectangle();
+                Point start = new Point(Math.Min(p.X, startPoint.X), Math.Min(p.Y, startPoint.Y));
+                rectangle.Width = Math.Abs(p.X - startPoint.X);
+                rectangle.Height = Math.Abs(p.Y - startPoint.Y);
+                rectangle.Stroke = Brushes.Black;
+                view.DrawTempShape(rectangle, start);
+            }
+            view.UpdateCoords((int)p.X, (int)p.Y);
         }
 
         public void StopDragAction(Point p)
         {
-            view.RemoveTempShape();
-            model.AddShape(rectangle, new Point(Math.Min(p.X, startPoint.X), Math.Min(p.Y, startPoint.Y)));
-            view.RefreshCanvas();
+            if (dragging)
+            {
+                dragging = false;
+                view.RemoveTempShape();
+                model.AddShape(rectangle, new Point(Math.Min(p.X, startPoint.X), Math.Min(p.Y, startPoint.Y)));
+                view.RefreshCanvas();
+            }
         }
 
         public void DoubleClickAction(Point p)
         {
-            throw new NotImplementedException();
+
         }
 
         public void ExitCanvasAction()
         {
-            throw new NotImplementedException();
+            view.UpdateCoords(0, 0);
         }
 
-        public void ClickOutsideCanvasAction()
+        public void ClickWithinAnotherShapeAction(object sender, MouseButtonEventArgs e)
         {
-            throw new NotImplementedException();
         }
     }
 }

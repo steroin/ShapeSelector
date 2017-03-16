@@ -55,11 +55,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Selection.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="DrawEllipse.cs" />
+    <Compile Include="DrawPolygon.cs" />
     <Compile Include="DrawRectangle.cs" />
     <Compile Include="IActionMode.cs" />
     <Compile Include="App.xaml.cs">

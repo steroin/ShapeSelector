@@ -23,13 +23,11 @@ namespace ShapeSelector
         CanvasModel canvasModel;
         IActionMode currentMode;
         Shape tempShape;
-        bool dragging;
         public MainWindow()
         {
             InitializeComponent();
             canvasModel = new CanvasModel();
             currentMode = new DrawEllipse(canvasModel, this);
-            dragging = false;
             canvas.Background = Brushes.Yellow;
             
         }
@@ -45,6 +43,10 @@ namespace ShapeSelector
                 s.Fill = GetCurrentColor();
                 Canvas.SetTop(s, canvasModel.Shapes[s].Y);
                 Canvas.SetLeft(s, canvasModel.Shapes[s].X);
+                s.MouseLeftButtonDown += canvas_MouseLeftButtonDown;
+                s.MouseLeftButtonDown += currentMode.ClickWithinAnotherShapeAction;
+                s.MouseMove += canvas_MouseMove;
+                s.MouseLeftButtonUp += canvas_MouseLeftButtonUp;
                 canvas.Children.Add(s);
             }
         }
@@ -57,9 +59,22 @@ namespace ShapeSelector
             Canvas.SetTop(s, pos.Y);
             Canvas.SetLeft(s, pos.X);
             s.MouseLeftButtonDown += canvas_MouseLeftButtonDown;
+            s.MouseLeftButtonDown += currentMode.ClickWithinAnotherShapeAction;
             s.MouseMove += canvas_MouseMove;
             s.MouseLeftButtonUp += canvas_MouseLeftButtonUp;
             tempShape = s;
+        }
+        public void MoveShape(Shape s, Point point)
+        {
+            foreach (Shape shape in canvas.Children)
+            {
+                if(shape==s)
+                {
+                    Canvas.SetLeft(s, point.X);
+                    Canvas.SetTop(s, point.Y);
+                    break;
+                }
+            }
         }
 
         public void RemoveTempShape()
@@ -73,29 +88,19 @@ namespace ShapeSelector
 
         private void canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if(!dragging)
-            {
-                dragging = true;
-                currentMode.StartDragAction(e.GetPosition(canvas));
-            }
+            if (e.ClickCount == 2) currentMode.DoubleClickAction(e.GetPosition(canvas));
+            else currentMode.StartDragAction(e.GetPosition(canvas));           
         }
 
         private void canvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            label_Coords.Content = "fired!";
-            if (dragging)
-            {
-                dragging = false;
-                currentMode.StopDragAction(e.GetPosition(canvas));
-            }
+            currentMode.StopDragAction(e.GetPosition(canvas));
+            
         }
 
         private void canvas_MouseMove(object sender, MouseEventArgs e)
         {
-            if(dragging)
-            {
-                currentMode.DragAction(e.GetPosition(canvas));
-            }
+            currentMode.DragAction(e.GetPosition(canvas));
         }
 
         Brush GetCurrentColor()
@@ -130,6 +135,32 @@ namespace ShapeSelector
         private void button_Rectangle_Click(object sender, RoutedEventArgs e)
         {
             currentMode = new DrawRectangle(canvasModel, this);
+        }
+
+        private void button_Polygon_Click(object sender, RoutedEventArgs e)
+        {
+            currentMode = new DrawPolygon(canvasModel, this);
+        }
+
+        private void button_Selection_Click(object sender, RoutedEventArgs e)
+        {
+            currentMode = new Selection(canvasModel, this);
+            RefreshCanvas();
+        }
+
+        private void comboBox_ColorPicker_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(canvas!=null)RefreshCanvas();
+        }
+
+        public void UpdateCoords(int x, int y)
+        {
+            label_Coords.Content = "["+x+","+y+"]";
+        }
+
+        private void canvas_MouseLeave(object sender, MouseEventArgs e)
+        {
+            currentMode.ExitCanvasAction();
         }
     }
 }

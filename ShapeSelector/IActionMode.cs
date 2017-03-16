@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
+using System.Windows.Shapes;
 
 namespace ShapeSelector
 {
@@ -13,7 +15,7 @@ namespace ShapeSelector
         void DragAction(Point p);
         void StopDragAction(Point p);
         void DoubleClickAction(Point p);
+        void ClickWithinAnotherShapeAction(object sender, MouseButtonEventArgs e);
         void ExitCanvasAction();
-        void ClickOutsideCanvasAction();
     }
 }

@@ -74,5 +74,10 @@ namespace ShapeSelector
             currentShape = (Shape)sender;
             shapeStartPoint = new Point(Canvas.GetLeft(currentShape), Canvas.GetTop(currentShape));
         }
+
+        public void UpdateModel(CanvasModel model)
+        {
+            this.model = model;
+        }
     }
 }

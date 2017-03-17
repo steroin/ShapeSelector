@@ -15,7 +15,7 @@
             <Menu x:Name="menu" Height="19" VerticalAlignment="Top" Grid.ColumnSpan="2" Margin="0,0,-4,0">
                 <MenuItem Header="Plik">
                     <MenuItem x:Name="mitem_FileOpen" Header="Otwórz" HorizontalAlignment="Left" Width="140" Click="mitem_FileOpen_Click"/>
-                    <MenuItem x:Name="mitem_FileSave" Header="Zapisz" HorizontalAlignment="Left" Width="140"/>
+                    <MenuItem x:Name="mitem_FileSave" Header="Zapisz" HorizontalAlignment="Left" Width="140" Click="mitem_FileSave_Click"/>
                     <MenuItem x:Name="mitem_FileClose" Header="Zamknij" HorizontalAlignment="Left" Width="140" Click="mitem_FileClose_Click"/>
                 </MenuItem>
             </Menu>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,8 +35,9 @@ namespace ShapeSelector
         public void RefreshCanvas()
         {
             canvas.Children.Clear();
-           
-            foreach(Shape s in canvasModel.Shapes.Keys)
+            canvas.Background = new ImageBrush(canvasModel.currentImage);
+
+            foreach (Shape s in canvasModel.Shapes.Keys)
             {
                 s.Stroke = null;
                 s.Opacity = 0.4;
@@ -170,26 +172,46 @@ namespace ShapeSelector
             OpenFileDialog dialog = new OpenFileDialog()
             {
                 DefaultExt = ".jpg",
-                Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif"
+                Filter = "ShapeSelector shape template file (*.shps)|*.shps|JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif"
             };
 
             bool? result = dialog.ShowDialog();
 
             if(result==true)
             {
-                var img = new BitmapImage(new Uri(dialog.FileName));
-                LoadImage(img);
-                canvasModel.LoadImage(img);
-            }
-        }
+                string fileName = dialog.FileName;
+                string ext = dialog.FileName.Substring(dialog.FileName.Length - 5);
 
-        public void LoadImage(BitmapImage img)
-        {
-            canvasModel = new CanvasModel();
-            canvas.Width = img.Width;
-            canvas.Height = img.Height;
-            canvas.Background = new ImageBrush(img);
-            RefreshCanvas();
+                if (ext == ".shps")
+                {
+                    try
+                    {
+                        canvasModel = FileManager.ReadFromFile(fileName);
+                        canvas.Width = canvasModel.currentImage.Width;
+                        canvas.Height = canvasModel.currentImage.Height;
+                        currentMode.UpdateModel(canvasModel);
+                    }
+                    catch(BindedImageFileNotFoundException ex)
+                    {
+                        MessageBox.Show("Nie odnaleziono powiązanego pliku z obrazem: "+ex.FileName, 
+                            "Nie znaleziono obrazu", 
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                        return;
+                    }
+                }
+                else
+                {
+                    var img = new BitmapImage(new Uri(dialog.FileName));
+                    canvasModel.currentImagePath = dialog.FileName;
+                    canvasModel.LoadImage(img);
+                    canvasModel.ClearShapes();
+                    canvas.Width = img.Width;
+                    canvas.Height = img.Height;
+                }
+
+                RefreshCanvas();
+            }
         }
 
         private void mitem_FileClose_Click(object sender, RoutedEventArgs e)
@@ -197,6 +219,17 @@ namespace ShapeSelector
             canvasModel = new CanvasModel();
             canvas.Background = null;
             RefreshCanvas();
+        }
+
+        private void mitem_FileSave_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = "ShapeSelector shape template file (*.shps)|*.shps";
+
+            if(dialog.ShowDialog()==true)
+            {
+                FileManager.SaveToFile(dialog.FileName, canvasModel.currentImagePath, canvasModel);
+            }
         }
     }
 }

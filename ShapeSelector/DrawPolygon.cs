@@ -75,5 +75,10 @@ namespace ShapeSelector
         public void ClickWithinAnotherShapeAction(object sender, MouseButtonEventArgs e)
         {
         }
+
+        public void UpdateModel(CanvasModel model)
+        {
+            this.model = model;
+        }
     }
 }

@@ -17,5 +17,6 @@ namespace ShapeSelector
         void DoubleClickAction(Point p);
         void ClickWithinAnotherShapeAction(object sender, MouseButtonEventArgs e);
         void ExitCanvasAction();
+        void UpdateModel(CanvasModel model);
     }
 }

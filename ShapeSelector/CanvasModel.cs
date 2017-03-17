@@ -12,8 +12,9 @@ namespace ShapeSelector
 {
     class CanvasModel
     {
-        public Dictionary<Shape, Point> Shapes;
+        public Dictionary<Shape, Point> Shapes { get; private set; }
         public BitmapImage currentImage { get; private set; }
+        public string currentImagePath { get; set; }
 
         public CanvasModel()
         {
@@ -49,6 +50,11 @@ namespace ShapeSelector
         public void LoadImage(BitmapImage img)
         {
             currentImage = img;
+        }
+
+        public void ClearShapes()
+        {
+            Shapes = new Dictionary<Shape, Point>();
         }
     }
 }

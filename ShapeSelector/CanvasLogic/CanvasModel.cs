@@ -13,13 +13,13 @@ namespace ShapeSelector
     class CanvasModel
     {
         public Dictionary<Shape, Point> Shapes { get; private set; }
-        public BitmapImage currentImage { get; private set; }
-        public string currentImagePath { get; set; }
+        public BitmapImage CurrentImage { get; private set; }
+        public string CurrentImagePath { get; set; }
 
         public CanvasModel()
         {
             Shapes = new Dictionary<Shape, Point>();
-            currentImage = null;
+            CurrentImage = null;
         }
 
         public void AddShape(Shape s, Point p)
@@ -49,7 +49,7 @@ namespace ShapeSelector
 
         public void LoadImage(BitmapImage img)
         {
-            currentImage = img;
+            CurrentImage = img;
         }
 
         public void ClearShapes()

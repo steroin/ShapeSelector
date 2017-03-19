@@ -42,7 +42,7 @@ namespace ShapeSelector
         public void RefreshCanvas()
         {
             canvas.Children.Clear();
-            canvas.Background = new ImageBrush(canvasModel.currentImage);
+            canvas.Background = new ImageBrush(canvasModel.CurrentImage);
             
 
             foreach (Shape s in canvasModel.Shapes.Keys)
@@ -112,7 +112,7 @@ namespace ShapeSelector
 
         private void canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (canvasModel.currentImage == null) return;
+            if (canvasModel.CurrentImage == null) return;
             Selected = null;
             if (e.ClickCount == 2) currentMode.DoubleClickAction(e.GetPosition(canvas));
             else currentMode.StartDragAction(e.GetPosition(canvas));           
@@ -120,13 +120,13 @@ namespace ShapeSelector
 
         private void canvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (canvasModel.currentImage == null) return;
+            if (canvasModel.CurrentImage == null) return;
             currentMode.StopDragAction(e.GetPosition(canvas));           
         }
 
         private void canvas_MouseMove(object sender, MouseEventArgs e)
         {
-            if (canvasModel.currentImage == null) return;
+            if (canvasModel.CurrentImage == null) return;
             currentMode.DragAction(e.GetPosition(canvas));
         }
 
@@ -223,7 +223,7 @@ namespace ShapeSelector
 
         private void canvas_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (canvasModel.currentImage == null) return;
+            if (canvasModel.CurrentImage == null) return;
             currentMode.ExitCanvasAction();
         }
 
@@ -247,8 +247,8 @@ namespace ShapeSelector
                     try
                     {
                         canvasModel = FileManager.ReadFromFile(fileName);
-                        canvas.Width = canvasModel.currentImage.Width;
-                        canvas.Height = canvasModel.currentImage.Height;
+                        canvas.Width = canvasModel.CurrentImage.Width;
+                        canvas.Height = canvasModel.CurrentImage.Height;
                         currentMode.UpdateModel(canvasModel);
                     }
                     catch(BindedImageFileNotFoundException ex)
@@ -263,7 +263,7 @@ namespace ShapeSelector
                 else
                 {
                     var img = new BitmapImage(new Uri(dialog.FileName));
-                    canvasModel.currentImagePath = dialog.FileName;
+                    canvasModel.CurrentImagePath = dialog.FileName;
                     canvasModel.LoadImage(img);
                     canvasModel.ClearShapes();
                     canvas.Width = img.Width;
@@ -285,7 +285,7 @@ namespace ShapeSelector
 
         private void mitem_FileSave_Click(object sender, RoutedEventArgs e)
         {
-            if (canvasModel.currentImage == null)
+            if (canvasModel.CurrentImage == null)
             {
                 MessageBox.Show("Nie znaleziono obrazu do zapisania.",
                                "Brak obrazu do zapisu",
@@ -298,7 +298,7 @@ namespace ShapeSelector
 
             if(dialog.ShowDialog()==true)
             {
-                FileManager.SaveToFile(dialog.FileName, canvasModel.currentImagePath, canvasModel);
+                FileManager.SaveToFile(dialog.FileName, canvasModel.CurrentImagePath, canvasModel);
             }
         }
 

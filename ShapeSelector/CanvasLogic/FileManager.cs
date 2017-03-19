@@ -49,7 +49,7 @@ namespace ShapeSelector
             CanvasModel model = new CanvasModel();
 
             string[] content = File.ReadAllLines(fileName);
-            model.currentImagePath = content[0];
+            model.CurrentImagePath = content[0];
             try
             {
                 model.LoadImage(new BitmapImage(new Uri(content[0])));

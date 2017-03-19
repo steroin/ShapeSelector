@@ -56,23 +56,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BindedImageFileNotFoundException.cs" />
-    <Compile Include="FileManager.cs" />
-    <Compile Include="Selection.cs" />
-    <Compile Include="TableRow.cs" />
+    <Compile Include="CanvasLogic\BindedImageFileNotFoundException.cs" />
+    <Compile Include="CanvasLogic\FileManager.cs" />
+    <Compile Include="ActionLogic\Selection.cs" />
+    <Compile Include="CanvasLogic\TableRow.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="DrawEllipse.cs" />
-    <Compile Include="DrawPolygon.cs" />
-    <Compile Include="DrawRectangle.cs" />
-    <Compile Include="IActionMode.cs" />
+    <Compile Include="ActionLogic\DrawEllipse.cs" />
+    <Compile Include="ActionLogic\DrawPolygon.cs" />
+    <Compile Include="ActionLogic\DrawRectangle.cs" />
+    <Compile Include="ActionLogic\IActionMode.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CanvasModel.cs" />
+    <Compile Include="CanvasLogic\CanvasModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

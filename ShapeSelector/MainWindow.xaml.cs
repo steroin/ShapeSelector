@@ -232,7 +232,7 @@ namespace ShapeSelector
             OpenFileDialog dialog = new OpenFileDialog()
             {
                 DefaultExt = ".jpg",
-                Filter = "ShapeSelector shape template file (*.shps)|*.shps|JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif"
+                Filter = "ShapeSelector shape template file (*.shps)|*.shps|JPEG Files (*.jpg, *.jpeg)|*.jpg;*.jpeg|PNG Files (*.png)|*.png|GIF Files (*.gif)|*.gif"
             };
 
             bool? result = dialog.ShowDialog();
@@ -285,6 +285,14 @@ namespace ShapeSelector
 
         private void mitem_FileSave_Click(object sender, RoutedEventArgs e)
         {
+            if (canvasModel.currentImage == null)
+            {
+                MessageBox.Show("Nie znaleziono obrazu do zapisania.",
+                               "Brak obrazu do zapisu",
+                               MessageBoxButton.OK,
+                               MessageBoxImage.Error);
+                return;
+            }
             SaveFileDialog dialog = new SaveFileDialog();
             dialog.Filter = "ShapeSelector shape template file (*.shps)|*.shps";
 

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ShapeSelector"
         mc:Ignorable="d"
-        Title="MainWindow" Height="768" Width="1024" PreviewKeyDown="window_KeyDown">
+        Title="ShapeSelector" Height="768" Width="1024" PreviewKeyDown="window_KeyDown">
     <Grid Margin="0,0,-8,-4">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>

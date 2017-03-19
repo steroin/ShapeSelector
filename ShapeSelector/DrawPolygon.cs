@@ -34,7 +34,7 @@ namespace ShapeSelector
                 double distY = p.Y - points[0].Y;
                 double dist = Math.Sqrt(distX*distX + distY*distY);
 
-                if(dist>3)points.Add(p);
+                if (dist <= 3) points.RemoveAt(points.Count-1);
                 Polygon polygon = new Polygon();
                 foreach (Point point in points) polygon.Points.Add(point);
                 points.RemoveAll(x => true);

@@ -40,7 +40,8 @@ namespace ShapeSelector
                 points.RemoveAll(x => true);
                 view.RemoveTempShape();
                 model.AddShape(polygon, new Point(0,0));
-                view.RefreshCanvas();              
+                view.RefreshCanvas();
+                view.RefreshTable();
             }
         }
 

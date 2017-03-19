@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -25,22 +26,30 @@ namespace ShapeSelector
         CanvasModel canvasModel;
         IActionMode currentMode;
         Shape tempShape;
+        ObservableCollection<TableRow> tableData;
+        public Shape Selected { get; set; }
+
+
         public MainWindow()
         {
             InitializeComponent();
             canvasModel = new CanvasModel();
-            currentMode = new Selection(canvasModel, this);            
+            currentMode = new Selection(canvasModel, this);
+            tableData = new ObservableCollection<TableRow>();
+            Selected = null;
         }
 
         public void RefreshCanvas()
         {
             canvas.Children.Clear();
             canvas.Background = new ImageBrush(canvasModel.currentImage);
+            
 
             foreach (Shape s in canvasModel.Shapes.Keys)
             {
                 s.Stroke = null;
                 s.Opacity = 0.4;
+                if (s == Selected) s.Stroke = Brushes.Black;
                 s.Fill = GetCurrentColor();
                 Canvas.SetTop(s, canvasModel.Shapes[s].Y);
                 Canvas.SetLeft(s, canvasModel.Shapes[s].X);
@@ -48,9 +57,23 @@ namespace ShapeSelector
                 s.MouseLeftButtonDown += currentMode.ClickWithinAnotherShapeAction;
                 s.MouseMove += canvas_MouseMove;
                 s.MouseLeftButtonUp += canvas_MouseLeftButtonUp;
-                canvas.Children.Add(s);
+                canvas.Children.Add(s);                             
             }
         }
+
+        public void RefreshTable()
+        {
+            int count = 1;
+            tableData.Clear();
+
+            foreach(Shape s in canvasModel.Shapes.Keys)
+            {
+                tableData.Add(new TableRow(count, getShapeName(s), getShapeDetails(s)));
+                count++;
+            }
+            shapesTable.ItemsSource = tableData;
+        }
+        
         
         public void DrawTempShape(Shape s, Point pos)
         {
@@ -90,6 +113,7 @@ namespace ShapeSelector
         private void canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (canvasModel.currentImage == null) return;
+            Selected = null;
             if (e.ClickCount == 2) currentMode.DoubleClickAction(e.GetPosition(canvas));
             else currentMode.StartDragAction(e.GetPosition(canvas));           
         }
@@ -127,6 +151,42 @@ namespace ShapeSelector
                     ret = Brushes.Yellow;
                     break;
             }
+            return ret;
+        }
+
+        string getShapeName(Shape s)
+        {
+            string ret = "undefined";
+
+            if (s is Ellipse) ret = "okrąg";
+            else if (s is Rectangle) ret = "prostokąt";
+            else if (s is Polygon) ret = "wielokąt";
+
+            return ret;
+        }
+
+        string getShapeDetails(Shape s)
+        {
+            string ret = "";
+
+            if (s is Ellipse)           
+                ret = "p = [" + Canvas.GetLeft(s) + "," + Canvas.GetTop(s) + "], w = " + s.Width + ", h = " + s.Height;            
+            else if (s is Rectangle)
+                ret = "p = [" + Canvas.GetLeft(s) + "," + Canvas.GetTop(s) + "], w = " + s.Width + ", h = " + s.Height;
+            else if (s is Polygon)
+            {
+                bool first = true;
+
+                foreach(Point p in ((Polygon)s).Points)
+                {
+                    if (!first) ret += ", ";                  
+                    else first = false;
+                    string x = string.Format("{0,2}", p.X + Canvas.GetLeft(s));
+                    string y = string.Format("{0,2}", p.Y + Canvas.GetTop(s));
+                    ret += "[" + x + ";" + y + "]";
+                }         
+            }
+
             return ret;
         }
 
@@ -211,6 +271,7 @@ namespace ShapeSelector
                 }
 
                 RefreshCanvas();
+                RefreshTable();
             }
         }
 
@@ -219,6 +280,7 @@ namespace ShapeSelector
             canvasModel = new CanvasModel();
             canvas.Background = null;
             RefreshCanvas();
+            RefreshTable();
         }
 
         private void mitem_FileSave_Click(object sender, RoutedEventArgs e)
@@ -229,6 +291,36 @@ namespace ShapeSelector
             if(dialog.ShowDialog()==true)
             {
                 FileManager.SaveToFile(dialog.FileName, canvasModel.currentImagePath, canvasModel);
+            }
+        }
+
+        private void window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+            {
+                DeleteSelectedShape();
+            }
+        }
+
+        private void DeleteSelectedShape()
+        {
+            if (Selected != null)
+            {
+                canvasModel.Shapes.Remove(Selected);
+                Selected = null;
+                RefreshCanvas();
+                RefreshTable();
+            }
+        }
+
+        private void shapesTable_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = shapesTable.SelectedIndex;
+            if (index >= 0)
+            {
+                if (Selected != null) Selected.Stroke = null;
+                Selected = canvasModel.Shapes.ElementAt(index).Key;
+                Selected.Stroke = Brushes.Black;
             }
         }
     }

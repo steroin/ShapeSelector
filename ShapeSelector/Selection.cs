@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace ShapeSelector
@@ -65,14 +66,17 @@ namespace ShapeSelector
                 dragging = false;
                 currentShape = null;
                 view.RefreshCanvas();
+                view.RefreshTable();
             }
         }
 
         public void ClickWithinAnotherShapeAction(object sender, MouseButtonEventArgs e)
         {
-            //MessageBox.Show(sender+"");
             currentShape = (Shape)sender;
+            view.Selected = currentShape;
+            currentShape.Stroke = Brushes.Black;
             shapeStartPoint = new Point(Canvas.GetLeft(currentShape), Canvas.GetTop(currentShape));
+            //view.RefreshCanvas();
         }
 
         public void UpdateModel(CanvasModel model)

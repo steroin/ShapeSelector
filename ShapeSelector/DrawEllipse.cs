@@ -66,6 +66,7 @@ namespace ShapeSelector
                 view.RemoveTempShape();
                 model.AddShape(ellipse, new Point(Math.Min(p.X, startPoint.X), Math.Min(p.Y, startPoint.Y)));
                 view.RefreshCanvas();
+                view.RefreshTable();
             }
         }
 

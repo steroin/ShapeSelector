@@ -56,6 +56,7 @@ namespace ShapeSelector
                 view.RemoveTempShape();
                 model.AddShape(rectangle, new Point(Math.Min(p.X, startPoint.X), Math.Min(p.Y, startPoint.Y)));
                 view.RefreshCanvas();
+                view.RefreshTable();
             }
         }
 

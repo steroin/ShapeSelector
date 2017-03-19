@@ -5,21 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ShapeSelector"
         mc:Ignorable="d"
-        Title="MainWindow" Height="768" Width="1024">
+        Title="MainWindow" Height="768" Width="1024" PreviewKeyDown="window_KeyDown">
     <Grid Margin="0,0,-8,-4">
-        <Grid Margin="0,0,12,5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="97*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Margin="0,0,12,5" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="7*"/>
-                <ColumnDefinition Width="624*"/>
+                <ColumnDefinition Width="820*"/>
+                <ColumnDefinition Width="200*"/>
             </Grid.ColumnDefinitions>
-            <Menu x:Name="menu" Height="19" VerticalAlignment="Top" Grid.ColumnSpan="2" Margin="0,0,-4,0">
+            <Menu x:Name="menu" Height="19" VerticalAlignment="Top" Grid.ColumnSpan="3" Margin="0,0,-4,0">
                 <MenuItem Header="Plik">
                     <MenuItem x:Name="mitem_FileOpen" Header="Otwórz" HorizontalAlignment="Left" Width="140" Click="mitem_FileOpen_Click"/>
                     <MenuItem x:Name="mitem_FileSave" Header="Zapisz" HorizontalAlignment="Left" Width="140" Click="mitem_FileSave_Click"/>
                     <MenuItem x:Name="mitem_FileClose" Header="Zamknij" HorizontalAlignment="Left" Width="140" Click="mitem_FileClose_Click"/>
                 </MenuItem>
             </Menu>
-            <ToolBar x:Name="toolBar" Margin="-3,19,-4,0" VerticalAlignment="Top" Height="66" IsHitTestVisible="True" ToolBarTray.IsLocked="True" Grid.ColumnSpan="2">
+            <ToolBar x:Name="toolBar" Margin="-3,19,-4,0" VerticalAlignment="Top" Height="66" IsHitTestVisible="True" ToolBarTray.IsLocked="True" Grid.ColumnSpan="3"
+                     Grid.Column="0">
                 <Button x:Name="button_Oval" Height="60" VerticalAlignment="Top" Width="90" Padding="0" Click="button_Oval_Click">
                     <Grid Grid.Column="1" HorizontalAlignment="Center" Height="60" VerticalAlignment="Top" Width="90">
                         <Image HorizontalAlignment="Center" Height="38" VerticalAlignment="Top" Width="40" Source="res/ellipse.png"/>
@@ -98,9 +103,19 @@
                     </ComboBoxItem>
                 </ComboBox>
             </ToolBar>
-            <Label x:Name="label_Coords" Content="[0,0]&#xA;" Grid.Column="1" HorizontalAlignment="Left" Margin="553,49,0,0" VerticalAlignment="Top" Height="31" Width="61"/>
-            <ScrollViewer HorizontalAlignment="Left" Margin="3,95,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <Canvas x:Name="canvas" Width="1009" Height="641" MouseLeave="canvas_MouseLeave" PreviewMouseLeftButtonDown="canvas_MouseLeftButtonDown" PreviewMouseLeftButtonUp="canvas_MouseLeftButtonUp" PreviewMouseMove="canvas_MouseMove" ClipToBounds="True"/>
+            <Label x:Name="label_Coords" Content="[0,0]&#xA;" Grid.Column="0" HorizontalAlignment="Left" Margin="553,49,0,0" VerticalAlignment="Top" Height="31" Width="61"/>
+            <ScrollViewer Grid.Column="0" x:Name="scrollViewer_canvasContainer" HorizontalAlignment="Left" Margin="3,95,0,0" VerticalAlignment="Top" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Width="Auto" ClipToBounds="True" Height="Auto">
+                <Canvas x:Name="canvas" Width="Auto" Height="Auto" MouseLeave="canvas_MouseLeave" PreviewMouseLeftButtonDown="canvas_MouseLeftButtonDown" PreviewMouseLeftButtonUp="canvas_MouseLeftButtonUp" PreviewMouseMove="canvas_MouseMove" ClipToBounds="True"/>
+            </ScrollViewer>
+
+            <ScrollViewer x:Name="scrollViewer_tableContainer" Grid.Column="1" HorizontalAlignment="Right" UseLayoutRounding="False" Margin="10,85,0,10" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <DataGrid x:Name="shapesTable" Height="Auto" Width="Auto" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" IsSynchronizedWithCurrentItem="False" AreRowDetailsFrozen="True" IsReadOnly="True" SelectionMode="Single" SelectionChanged="shapesTable_SelectionChanged">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Lp" Binding="{Binding Id}"/>
+                        <DataGridTextColumn Header="Rodzaj" Binding="{Binding Name}"/>
+                        <DataGridTextColumn Header="Szczegóły" Binding="{Binding Details}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </ScrollViewer>
 
 
